@@ -2,7 +2,8 @@ package tasks;
 
 import common.Person;
 import common.PersonService;
-import java.util.Collections;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -21,8 +22,26 @@ public class Task1 {
     this.personService = personService;
   }
 
+  /*
+   * Используем HashMap для временного хранения индексов каждого элемента
+   * списка, так как для сортировки множества persons нам нужно знать, на
+   * какой позиции стояли индексы в изначальном списке, а операция поиска
+   * индекса по значению элемента в любых списках имеет сложность O(n),
+   * что приводит к итоговой сложности сортировки O(n^2 log n)
+   * 
+   * С использованием HashMap операция получения индекса имеет сложность
+   * O(1), что снижает сложность сортировки до O(n log n)
+   */
   public List<Person> findOrderedPersons(List<Integer> personIds) {
     Set<Person> persons = personService.findPersons(personIds);
-    return Collections.emptyList();
+    HashMap<Integer, Integer> personIndexMap = new HashMap<>();
+    Integer index = 0;
+    for (Integer id : personIds) {
+      personIndexMap.put(id, index);
+      index++;
+    }
+    return persons.stream()
+        .sorted((a, b) -> personIndexMap.get(a.id()) - personIndexMap.get(b.id()))
+        .toList();
   }
 }
