@@ -2,9 +2,11 @@ package tasks;
 
 import common.Person;
 import common.PersonService;
-import java.util.Collections;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /*
 Задача 1
@@ -21,8 +23,20 @@ public class Task1 {
     this.personService = personService;
   }
 
+  /*
+   * Используем HashMap для временного хранения Person с доступом по id.
+   * Сложность заполнения мапы O(n).
+   * Далее используем стримы для маппинга id каждого человека к объекту Person,
+   * что тоже имеет сложность O(n).
+   * Сборка элементов в список тоже O(n), соответственно общая сложность
+   * также будет равна O(n).
+   */
   public List<Person> findOrderedPersons(List<Integer> personIds) {
     Set<Person> persons = personService.findPersons(personIds);
-    return Collections.emptyList();
+    Map<Integer, Person> personById = persons.stream()
+                                             .collect(Collectors.toMap(Person::id, person -> person));
+    return personIds.stream()
+                    .map(personById::get)
+                    .toList();
   }
 }
