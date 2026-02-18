@@ -2,5 +2,7 @@
 out/
 .directory
 *.iml
+.vscode
+eclipse-formatter.xml
 
 target/
