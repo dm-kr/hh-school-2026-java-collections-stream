@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,8 @@ public class Task1Test {
         Arguments.of(List.of()),
         Arguments.of(List.of(3, 1, 2)),
         Arguments.of(List.of(1)),
-        Arguments.of(List.of(5, 4, 3, 2, 1))
-    );
+        Arguments.of(List.of(5, 4, 3, 2, 1)),
+        Arguments.of(IntStream.range(0, 100_000).boxed().collect(Collectors.toUnmodifiableList())));
+    // Дополнил список тест кейсов, чтобы протестировать производительность
   }
 }
