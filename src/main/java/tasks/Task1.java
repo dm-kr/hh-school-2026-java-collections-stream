@@ -3,6 +3,7 @@ package tasks;
 import common.Person;
 import common.PersonService;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -41,7 +42,7 @@ public class Task1 {
       index++;
     }
     return persons.stream()
-        .sorted((a, b) -> personIndexMap.get(a.id()) - personIndexMap.get(b.id()))
-        .toList();
+            .sorted(Comparator.comparing(person -> personIndexMap.get(person.id())))
+            .toList();
   }
 }
