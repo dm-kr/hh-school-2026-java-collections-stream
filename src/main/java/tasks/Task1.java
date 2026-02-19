@@ -3,10 +3,10 @@ package tasks;
 import common.Person;
 import common.PersonService;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /*
 Задача 1
@@ -24,25 +24,19 @@ public class Task1 {
   }
 
   /*
-   * Используем HashMap для временного хранения индексов каждого элемента
-   * списка, так как для сортировки множества persons нам нужно знать, на
-   * какой позиции стояли индексы в изначальном списке, а операция поиска
-   * индекса по значению элемента в любых списках имеет сложность O(n),
-   * что приводит к итоговой сложности сортировки O(n^2 log n)
-   * 
-   * С использованием HashMap операция получения индекса имеет сложность
-   * O(1), что снижает сложность сортировки до O(n log n)
+   * Используем HashMap для временного хранения Person с доступом по id.
+   * Сложность заполнения мапы O(n).
+   * Далее используем стримы для маппинга id каждого человека к объекту Person,
+   * что тоже имеет сложность O(n).
+   * Сборка элеметнов в список тоже O(n), соответственно общая сложность
+   * также будет равна O(n).
    */
   public List<Person> findOrderedPersons(List<Integer> personIds) {
     Set<Person> persons = personService.findPersons(personIds);
-    HashMap<Integer, Integer> personIndexMap = new HashMap<>();
-    Integer index = 0;
-    for (Integer id : personIds) {
-      personIndexMap.put(id, index);
-      index++;
+    HashMap<Integer, Person> personById = new HashMap<>();
+    for (Person person : persons) {
+      personById.put(person.id(), person);
     }
-    return persons.stream()
-            .sorted(Comparator.comparing(person -> personIndexMap.get(person.id())))
-            .toList();
+    return personIds.stream().map(id -> personById.get(id)).collect(Collectors.toList());
   }
 }
