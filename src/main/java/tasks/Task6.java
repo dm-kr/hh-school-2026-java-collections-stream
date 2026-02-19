@@ -18,7 +18,11 @@ import java.util.stream.Collectors;
 public class Task6 {
 
   private static String createDescription(Person person, Area area) {
-    return new StringBuilder().append(person.firstName()).append(" - ").append(area.getName()).toString();
+    return new StringBuilder()
+            .append(person.firstName())
+            .append(" - ")
+            .append(area.getName())
+            .toString();
   }
 
   public static Set<String> getPersonDescriptions(Collection<Person> persons,

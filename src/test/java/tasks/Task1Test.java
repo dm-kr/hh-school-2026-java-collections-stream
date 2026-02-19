@@ -31,9 +31,10 @@ public class Task1Test {
   @ParameterizedTest
   @MethodSource("generateData")
   public void test(List<Integer> ids) {
+    Instant now = Instant.now();
     Set<Person> persons = ids.stream()
         .sorted()
-        .map(id -> new Person(id, "firstName", "secondName", "middleName", Instant.now()))
+        .map(id -> new Person(id, "firstName", "secondName", "middleName", now))
         .collect(Collectors.toSet());
     when(personService.findPersons(eq(ids)))
         .thenReturn(persons);
@@ -46,7 +47,10 @@ public class Task1Test {
         Arguments.of(List.of(3, 1, 2)),
         Arguments.of(List.of(1)),
         Arguments.of(List.of(5, 4, 3, 2, 1)),
-        Arguments.of(IntStream.range(0, 100_000).boxed().collect(Collectors.toUnmodifiableList())));
-    // Дополнил список тест кейсов, чтобы протестировать производительность
+        Arguments.of(List.of(5, 5, 5)),
+
+        // Дополнил список тест кейсов, чтобы протестировать производительность
+        Arguments.of(IntStream.range(0, 100_000).boxed().collect(Collectors.toUnmodifiableList()))
+    );
   }
 }
