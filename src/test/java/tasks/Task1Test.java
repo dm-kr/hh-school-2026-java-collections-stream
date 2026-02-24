@@ -38,9 +38,10 @@ public class Task1Test {
   @ParameterizedTest
   @MethodSource("generateData")
   public void test(List<Integer> ids) {
+    Instant now = Instant.now();
     Set<Person> persons = ids.stream()
                              .sorted()
-                             .map(id -> new Person(id, "firstName", "secondName", "middleName", Instant.now()))
+                             .map(id -> new Person(id, "firstName", "secondName", "middleName", now))
                              .collect(Collectors.toSet());
     when(personService.findPersons(eq(ids)))
         .thenReturn(persons);
